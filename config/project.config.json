@@ -1,0 +1,12 @@
+{
+  "projectName": "Playwright AI API Automation Framework",
+  "framework": "Playwright",
+  "language": "TypeScript",
+  "baseUrl": "https://dummyjson.com",
+  "repository": "https://github.com/hammadafzal1/Playwright-AI-API-Automation-Framework",
+  "defaultBranch": "main",
+  "environment": "QA",
+  "apiSpecification": "",
+  "testReportFolder": "reports",
+  "playwrightTestFolder": "tests"
+}
