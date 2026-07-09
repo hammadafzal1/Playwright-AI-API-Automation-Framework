@@ -1,23 +1,23 @@
 # API Test Scenarios
 
 ## Positive Scenarios
-- Login with known valid credentials
-- Login immediately after creating a new user
-- Validate that the access token is present and non-empty
+- Login with valid credentials from testdata.json
+- Reuse the captured access token against a protected user endpoint
+- Validate the response structure and performance threshold
 
 ## Negative Scenarios
-- Invalid password
-- Empty password
+- Invalid username and invalid password combinations
+- Empty credentials
 - Missing request body
 - Invalid JSON payload
-- Invalid content type or malformed headers
+- Malformed authorization header
 
 ## Boundary Scenarios
-- Very long password values
-- Empty/blank credentials
-- Unusual usernames
+- Long usernames
+- Minimum-length password values
 
 ## Security Scenarios
-- Invalid access token handling
-- Malformed authorization header
-- Injection-style payload strings
+- SQL injection payloads
+- XSS payloads
+- HTML injection payloads
+- Invalid token handling via the reusable auth wrapper

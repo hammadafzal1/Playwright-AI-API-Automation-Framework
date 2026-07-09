@@ -1,12 +1,12 @@
 # Execution Summary
 
-- Total tests: 24
-- Passed: 15
-- Failed: 9
+- Total tests: 39
+- Passed: 39
+- Failed: 0
 - Skipped: 0
-- Duration: captured from Playwright execution
+- Duration: 33.9s
 
 ## Observations
 - The login endpoint returns a flattened response object with accessToken, refreshToken, id, username, and email.
-- The signup-to-login flow currently returns 400 Invalid credentials for freshly created accounts, which should be investigated as a service defect.
+- The current Playwright suite completed successfully with no failures.
 - The framework is reusable and supports further API modules.

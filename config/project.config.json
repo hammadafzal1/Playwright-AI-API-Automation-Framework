@@ -1,12 +1,30 @@
+
 {
   "projectName": "Playwright AI API Automation Framework",
+
   "framework": "Playwright",
+
   "language": "TypeScript",
+
   "baseUrl": "https://dummyjson.com",
-  "repository": "https://github.com/hammadafzal1/Playwright-AI-API-Automation-Framework",
-  "defaultBranch": "main",
+
   "environment": "QA",
-  "apiSpecification": "",
-  "testReportFolder": "reports",
-  "playwrightTestFolder": "tests"
+
+  "apiSource": "Business Story",
+
+  "swaggerFile": "input/swagger.json",
+
+  "testDataFile": "input/testdata.json",
+
+  "repository": "https://github.com/hammadafzal1/Playwright-AI-API-Automation-Framework",
+
+  "defaultBranch": "main",
+
+  "reportFolder": "reports",
+
+  "testFolder": "tests",
+
+  "autoCommit": false,
+
+  "autoPush": false
 }

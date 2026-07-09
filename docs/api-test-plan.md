@@ -1,37 +1,42 @@
 # API Test Plan
 
 ## Objective
-Validate the login workflow for the DummyJSON authentication API and confirm that valid credentials succeed while invalid requests return the expected error responses.
+Validate the authentication workflow for the DummyJSON login API and confirm that valid credentials succeed, invalid requests fail safely, and reusable tokens can be used for protected requests.
 
 ## Scope
-- Positive scenarios for successful login
-- Negative scenarios for invalid input and malformed payloads
-- Authentication-related validation and response structure checks
+- Positive authentication scenarios
+- Negative and boundary validation
+- Security-focused payload handling
+- Token capture and token reuse through a protected endpoint
 
 ## Assumptions
-- The service exposes a public login endpoint at /auth/login.
-- The DummyJSON service accepts valid username/password credentials.
-- The environment is the QA environment defined in the project configuration.
+- The service exposes a public login endpoint at /auth/login and a protected user endpoint at /auth/me.
+- Test data is loaded from input/testdata.json.
+- The environment is QA and the base URL is configured in config/project.config.json.
 
 ## Entry Criteria
-- Playwright and project dependencies are installed.
+- Playwright dependencies are installed.
 - The base URL is reachable.
+- Test data file is present and readable.
 
 ## Exit Criteria
-- All planned automated tests execute successfully or failures are documented with evidence.
+- All automated tests execute and the results are documented.
+- Any non-passing cases are analyzed and reported without weakening assertions.
 
 ## Risks
-- Remote API behavior may differ from story expectations.
-- Some negative cases may return generic validation messages rather than strict schema errors.
+- The public API may return generic error messages for invalid payloads.
+- The service contract may differ from the story example, so assertions should follow the actual live response.
 
 ## Traceability Matrix
 | ID | Scenario | Expected Result |
 | --- | --- | --- |
-| TC-01 | Valid login | Status 200 and token returned |
-| TC-02 | New user signup then login | Status 200 after signup |
-| TC-03 | Invalid password | Status 400 |
-| TC-04 | Empty password | Status 400 |
-| TC-05 | Missing body | Status 400 |
-| TC-06 | Invalid JSON | Status 400 |
-| TC-07 | Malformed authorization header | Request still accepted for login |
-| TC-08 | Response schema validation | Response contains expected keys |
+| TC-01 | Valid credentials login | HTTP 200 and token values present |
+| TC-02 | Token reuse for protected endpoint | HTTP 200 with user profile returned |
+| TC-03 | Invalid credentials | HTTP 400 with an error message |
+| TC-04 | Empty credentials | HTTP 400 |
+| TC-05 | Missing body | HTTP 400 |
+| TC-06 | Invalid JSON | HTTP 400 |
+| TC-07 | Malformed authorization header | Request is handled without breaking test flow |
+| TC-08 | Boundary data | HTTP 400 for invalid boundary inputs |
+| TC-09 | Security payloads | HTTP 400 for malicious input |
+| TC-10 | Response schema validation | Expected login response fields are present |

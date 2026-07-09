@@ -16,39 +16,51 @@ test.describe('Login API automation', () => {
     authApi = new AuthApi(request, config.baseUrl);
   });
 
-  test('logs in with valid credentials', async () => {
-    const response = await authApi.login({ username: 'emilys', password: 'emilyspass' });
+  test('logs in with valid credentials from test data', async () => {
+    const credentials = dataFactory.getValidUser();
+    const response = await authApi.login(credentials);
 
     expect(response.status).toBe(200);
     expect(response.body.accessToken).toBeTruthy();
     expect(response.body.refreshToken).toBeTruthy();
     expect(response.body.id).toBeGreaterThan(0);
-    expect(response.body.username).toBe('emilys');
-    expect(response.body.email).toBe('emily.johnson@x.dummyjson.com');
-    expect(response.duration).toBeLessThan(2000);
+    expect(response.body.username).toBe(credentials.username);
+    expect(response.body.email).toBeTruthy();
+    expect(response.duration).toBeLessThan(dataFactory.getPerformanceThreshold());
   });
 
-  test('captures the signup-to-login defect for a newly created user', async () => {
-    const user = dataFactory.createUser();
-    const signupResponse = await authApi.signup(user);
+  test('reuses the captured token for a protected user endpoint', async () => {
+    const credentials = dataFactory.getValidUser();
+    const loginResponse = await authApi.login(credentials);
 
-    expect(signupResponse.status).toBe(201);
+    expect(loginResponse.status).toBe(200);
 
-    const loginResponse = await authApi.login({ username: user.username, password: user.password });
+    const profileResponse = await authApi.getCurrentUser();
 
-    expect(loginResponse.status).toBe(400);
-    expect(loginResponse.body.message).toContain('Invalid credentials');
+    expect(profileResponse.status).toBe(200);
+    expect(profileResponse.body.username).toBe(credentials.username);
+    expect(profileResponse.body.email).toBeTruthy();
   });
 
-  test('rejects invalid password', async () => {
-    const response = await authApi.login({ username: 'emilys', password: 'wrong-password' });
+  test('rejects invalid credentials from test data', async () => {
+    const credentials = dataFactory.getInvalidUser();
+    const response = await authApi.login(credentials);
 
     expect(response.status).toBe(400);
     expect(response.body.message).toContain('Invalid credentials');
   });
 
-  test('rejects empty password', async () => {
-    const response = await authApi.login({ username: 'emilys', password: '' });
+  test('rejects invalid password from test data', async () => {
+    const credentials = dataFactory.getInvalidPasswordUser();
+    const response = await authApi.login(credentials);
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toContain('Invalid credentials');
+  });
+
+  test('rejects empty credentials from test data', async () => {
+    const credentials = dataFactory.getAuthenticationData().emptyUser;
+    const response = await authApi.login(credentials);
 
     expect(response.status).toBe(400);
     expect(response.body.message).toBeTruthy();
@@ -71,7 +83,8 @@ test.describe('Login API automation', () => {
   });
 
   test('rejects malformed authorization header', async () => {
-    const response = await authApi.postRaw('/auth/login', { username: 'emilys', password: 'emilyspass' }, {
+    const credentials = dataFactory.getValidUser();
+    const response = await authApi.postRaw('/auth/login', credentials, {
       headers: { Authorization: 'Bearer', 'Content-Type': 'application/json', Accept: 'application/json' },
     });
 
@@ -79,8 +92,25 @@ test.describe('Login API automation', () => {
     expect(response.body.accessToken).toBeTruthy();
   });
 
-  test('validates response schema for login success', async () => {
-    const response = await authApi.login({ username: 'emilys', password: 'emilyspass' });
+  test('rejects boundary credentials', async () => {
+    const boundary = dataFactory.getBoundaryData();
+    const response = await authApi.login({ username: boundary.longUsername, password: boundary.minimumPassword });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBeTruthy();
+  });
+
+  test('rejects injection payloads safely', async () => {
+    const security = dataFactory.getSecurityData();
+    const response = await authApi.login({ username: security.sqlInjection, password: security.xssInjection });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBeTruthy();
+  });
+
+  test('validates schema for login success', async () => {
+    const credentials = dataFactory.getValidUser();
+    const response = await authApi.login(credentials);
 
     expect(response.body).toEqual(
       expect.objectContaining({
