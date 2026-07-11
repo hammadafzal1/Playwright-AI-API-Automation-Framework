@@ -1,4 +1,4 @@
-import { APIRequestContext, APIResponse } from '@playwright/test';
+import { APIRequestContext } from '@playwright/test';
 
 export interface ApiResponse<TBody = any> {
   status: number;
@@ -43,6 +43,18 @@ export class BaseApi {
 
   async post<TBody = any>(path: string, data?: unknown, options?: { headers?: Record<string, string> }): Promise<ApiResponse<TBody>> {
     return this.send<TBody>('POST', path, data, options);
+  }
+
+  async put<TBody = any>(path: string, data?: unknown, options?: { headers?: Record<string, string> }): Promise<ApiResponse<TBody>> {
+    return this.send<TBody>('PUT', path, data, options);
+  }
+
+  async delete<TBody = any>(path: string, options?: { headers?: Record<string, string> }): Promise<ApiResponse<TBody>> {
+    return this.send<TBody>('DELETE', path, undefined, options);
+  }
+
+  async patch<TBody = any>(path: string, data?: unknown, options?: { headers?: Record<string, string> }): Promise<ApiResponse<TBody>> {
+    return this.send<TBody>('PATCH', path, data, options);
   }
 
   async postRaw<TBody = any>(path: string, data?: unknown, options?: { headers?: Record<string, string> }): Promise<ApiResponse<TBody>> {

@@ -13,9 +13,11 @@ export interface GeneratedUser {
 
 export class TestDataFactory {
   private readonly testDataFile: string;
+  private readonly testData: any;
 
   constructor(private readonly environmentConfig: EnvironmentConfig = new EnvironmentConfig()) {
     this.testDataFile = path.resolve(__dirname, '../../', this.environmentConfig.testDataFile);
+    this.testData = this.readTestData();
   }
 
   private readTestData(): any {
@@ -24,11 +26,11 @@ export class TestDataFactory {
   }
 
   getAuthenticationData(): any {
-    return this.readTestData().authentication;
+    return this.testData.authentication ?? {};
   }
 
   getValidUser(): any {
-    return this.getAuthenticationData().validUser;
+    return this.getAuthenticationData().validUser ?? this.testData.user;
   }
 
   getInvalidUser(): any {
@@ -36,23 +38,47 @@ export class TestDataFactory {
   }
 
   getInvalidPasswordUser(): any {
-    return this.getAuthenticationData().invalidPassword;
+    return this.getAuthenticationData().invalidPassword ?? {
+      username: this.getValidUser().username,
+      password: 'wrong-password',
+    };
   }
 
   getInvalidUsernameUser(): any {
-    return this.getAuthenticationData().invalidUsername;
+    return this.getAuthenticationData().invalidUsername ?? {
+      username: 'invalid-user',
+      password: this.getValidUser().password,
+    };
   }
 
   getBoundaryData(): any {
-    return this.readTestData().boundaryData;
+    return {
+      longUsername: 'a'.repeat(300),
+      minimumPassword: 'x',
+    };
   }
 
   getSecurityData(): any {
-    return this.readTestData().securityTests;
+    return {
+      sqlInjection: "' OR 1=1 --",
+      xssInjection: '<script>alert(1)</script>',
+    };
+  }
+
+  getUsersData(): any {
+    return this.testData.users ?? {};
+  }
+
+  getTodosData(): any {
+    return this.testData.todos ?? {};
+  }
+
+  getProductsData(): any {
+    return this.testData.products ?? {};
   }
 
   getPerformanceThreshold(): number {
-    return this.readTestData().performance.maxResponseTime;
+    return this.testData.performance?.maxResponseTime ?? 2000;
   }
 
   createUser(overrides: Partial<GeneratedUser> = {}): GeneratedUser {

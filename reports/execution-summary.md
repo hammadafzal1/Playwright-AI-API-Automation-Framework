@@ -1,12 +1,12 @@
 # Execution Summary
 
-- Total tests: 39
-- Passed: 39
+- Total tests: 10
+- Passed: 10
 - Failed: 0
 - Skipped: 0
-- Duration: 33.9s
+- Duration: 12.4s
 
 ## Observations
-- The login endpoint returns a flattened response object with accessToken, refreshToken, id, username, and email.
-- The current Playwright suite completed successfully with no failures.
-- The framework is reusable and supports further API modules.
+- The DummyJSON automation suite now covers authentication, users, todos, products, and performance checks using reusable Playwright API wrappers.
+- The live DummyJSON service responded successfully for the implemented scenarios.
+- Todo update and delete requests currently return not-found responses for newly created todos, which were captured as documented business behavior rather than framework failures.

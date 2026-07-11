@@ -1,23 +1,21 @@
 # API Test Scenarios
 
 ## Positive Scenarios
-- Login with valid credentials from testdata.json
-- Reuse the captured access token against a protected user endpoint
-- Validate the response structure and performance threshold
+- Login with valid credentials and confirm the returned token payload is present.
+- Reuse the captured access token to request the current authenticated user profile.
+- Retrieve the user list and perform a user search with known keywords.
+- Create, update, and delete a todo using the configured payloads.
+- Retrieve the product catalog, fetch a product by ID, and search for products by keyword.
 
 ## Negative Scenarios
-- Invalid username and invalid password combinations
-- Empty credentials
-- Missing request body
-- Invalid JSON payload
-- Malformed authorization header
+- Submit invalid login credentials and expect a 400 response with an error message.
+- Request a user with an invalid identifier and expect a not-found response.
+- Request a product with an invalid identifier and expect a not-found response.
 
 ## Boundary Scenarios
-- Long usernames
-- Minimum-length password values
+- Validate the configured performance threshold for API responses.
+- Check that the API returns well-formed objects and arrays for valid requests.
 
-## Security Scenarios
-- SQL injection payloads
-- XSS payloads
-- HTML injection payloads
-- Invalid token handling via the reusable auth wrapper
+## Business Rule Checks
+- Validate HTTP status codes, response bodies, required fields, and response timing.
+- Document any discrepancies where the live API deviates from the expected behavior.
