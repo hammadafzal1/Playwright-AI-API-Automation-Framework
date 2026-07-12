@@ -1,13 +1,28 @@
 {
   "name": "api-automation-ai-agentic",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright AI Agentic API Automation Framework",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "commonjs",
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen"
+  },
+  "keywords": [
+    "playwright",
+    "api",
+    "automation",
+    "ai",
+    "agentic",
+    "testing",
+    "typescript"
+  ],
+  "author": "Hammad Afzal",
+  "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.1",
