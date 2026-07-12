@@ -20,7 +20,7 @@ test.describe('Login API automation', () => {
     const credentials = dataFactory.getValidUser();
     const response = await authApi.login(credentials);
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body.accessToken).toBeTruthy();
     expect(response.body.refreshToken).toBeTruthy();
     expect(response.body.id).toBeGreaterThan(0);
