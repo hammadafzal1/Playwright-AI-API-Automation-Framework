@@ -8,5 +8,3 @@ node_modules/
 /playwright/.auth/
 input/**/api-story.md
 input/**/api-prompt.md
-input/**/api-contract.md
-input/**/testdata.json
