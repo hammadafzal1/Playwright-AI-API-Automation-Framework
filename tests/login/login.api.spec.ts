@@ -88,7 +88,7 @@ test.describe('Login API automation', () => {
       headers: { Authorization: 'Bearer', 'Content-Type': 'application/json', Accept: 'application/json' },
     });
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body.accessToken).toBeTruthy();
   });
 
